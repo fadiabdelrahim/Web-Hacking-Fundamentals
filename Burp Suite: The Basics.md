@@ -199,7 +199,7 @@ These are extremely useful if you're ever stuck and don't know what a feature do
 Navigating around the Burp Suite GUI by default is done entirely using the top menu bars:
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/110497344/199904316-e0c1c98f-3867-412d-93bd-61ee8bffbb82.png" height="50%" width="50%" alt="Burp"/>
+<img src="https://user-images.githubusercontent.com/110497344/199904316-e0c1c98f-3867-412d-93bd-61ee8bffbb82.png" height="90%" width="90%" alt="Burp"/>
 </p>
 
 These allow you to switch between modules (along the top row of the attached image). If the selected module has more than one sub-tab, then these can be selected using a second menu bar which appears directly below the original bar (the bottom row of the image above). It is common for module-specific settings to be provided in these sub-tabs (as is the case with the Proxy Options above).
@@ -207,7 +207,7 @@ These allow you to switch between modules (along the top row of the attached ima
 Tabs can also be popped out into separate windows should you prefer to view multiple tabs separately. This can be done by clicking "Window" in the application menu at the top of the screen, then choosing to "Detach" tabs:
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/110497344/199904400-be2ea83a-81b1-4f69-a992-eac670152076.png" height="50%" width="50%" alt="Burp"/>
+<img src="https://user-images.githubusercontent.com/110497344/199904400-be2ea83a-81b1-4f69-a992-eac670152076.png" height="20%" width="20%" alt="Burp"/>
 </p>
 
 These can be reattached in the same way.
@@ -215,7 +215,7 @@ These can be reattached in the same way.
 In addition to the menu bar, Burp Suite also has keyboard shortcuts that allow quick navigation to key tabs. By default, these are:
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/110497344/199904400-be2ea83a-81b1-4f69-a992-eac670152076.png" height="50%" width="50%" alt="Burp"/>
+<img src="https://user-images.githubusercontent.com/110497344/199904400-be2ea83a-81b1-4f69-a992-eac670152076.png" height="20%" width="20%" alt="Burp"/>
 </p>
 
 Shortcut - Does
@@ -609,16 +609,134 @@ See the difference between the amount of traffic getting caught by the proxy bef
 
 </p>
 
+Control of the scope may be the most useful aspect of the Target tab, but it's by no means the only use for this section of Burp.
 
+There are three sub-tabs under Target:
+
+- <b>Site map</b> allows us to map out the apps we are targeting in a tree structure. Every page that we visit will show up here, allowing us to automatically generate a site map for the target simply by browsing around the web app. Burp Pro would also allow us to spider the targets automatically (i.e. look through every page for links and use them to map out as much of the site as-is publicly accessible using the links between pages); however, with Burp Community, we can still use this to accumulate data whilst we perform our initial enumeration steps.
+The Site map can be especially useful if we want to map out an API, as whenever we visit a page, any API endpoints that the page retrieves data from whilst loading will show up here.
+- <b>Scope:</b> We have already seen the Scope sub-tab -- it allows us to control Burp's target scope for the project.
+- <b>Issue Definitions:</b> Whilst we don't have access to the Burp Suite vulnerability scanner in Burp Community, we do still have access to a list of all the vulnerabilities it looks for. The Issue Definitions section gives us a huge list of web vulnerabilities (complete with descriptions and references) which we can draw from should we need citations for a report or help describing a vulnerability.
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>Take a look around the site on http://10.10.75.35/ -- we will be using this a lot throughout the module. Visit every page linked to from the homepage, then check your sitemap -- one endpoint should stand out as being very unusual!
+
+Visit this in your browser (or use the "Response" section of the site map entry for that endpoint)
+
+What is the flag you receive?
+
+Hint: You are looking for a suspicious page with a name made up of a series of random letters and numbers.</b>
 
 <p align="center">
-<img src="" height="50%" width="50%" alt="Burp"/>
+<img src="https://user-images.githubusercontent.com/110497344/199926858-f8a0cd87-f0fe-4006-aa7c-b57bd8251c1e.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+    THM{NmNlZTliNGE1MWU1ZTQzMzgzNmFiNWVK}
+    
+<b>Look through the Issue Definitions list.
+
+What is the typical severity of a Vulnerable JavaScript dependency?</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199926276-d78d18d6-d670-4a9d-931f-a7ea9a27d305.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+https://portswigger.net/kb/issues/00500080_vulnerable-javascript-dependency 
+
+    Low
+    
+<h2>Task 14: Practical: Example Attack</h2>
+
+</p>
+
+Having looked at how to set up and configure our proxy, let's go through a simplified real-world example.
+
+We will start by taking a look at the support form at http://10.10.75.35/ticket/:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199927099-744afaa9-00d5-4374-845c-b8aeac22240d.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+In a real-world web app pentest, we would test this for a variety of things: one of which would be Cross-Site Scripting (or XSS). If you have not yet encountered XSS, it can be thought of as injecting a client-side script (usually in Javascript) into a webpage in such a way that it executes. There are various kinds of XSS -- the type that we are using here is referred to as "Reflected" XSS as it only affects the person making the web request.
+
+Let's begin.
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>Try typing: <script>alert("Succ3ssful XSS")</script>, into the "Contact Email" field. You should find that there is a client-side filter in place which prevents you from adding any special characters that aren't allowed in email addresses:</b>
+
+    No answer needed
+    
+<b>Fortunately for us, client-side filters are absurdly easy to bypass. There are a variety of ways we could disable the script or just prevent it from loading in the first place.
+
+Let's focus on simply bypassing the filter for now.
+
+First, make sure that your Burp Proxy is active and that the intercept is on.</b>
+
+    No answer needed
+    
+<b>Now, enter some legitimate data into the support form. For example: "pentester@example.thm" as an email address, and "Test Attack" as a query.
+
+Submit the form -- the request should be intercepted by the proxy.</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199928358-def7830a-960e-48e9-99ec-0e0eb67cd3f9.png" height="50%" width="50%" alt="Burp"/>
 </p>
 
 <p align="center">
-<img src="" height="50%" width="50%" alt="Burp"/>
+<img src="https://user-images.githubusercontent.com/110497344/199928798-924da063-ebb6-4d0e-9234-337854a6ba46.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+    No answer needed
+    
+<b>With the request captured in the proxy, we can now change the email field to be our very simple payload from above: <script>alert("Succ3ssful XSS")</script>. After pasting in the payload, we need to select it, then URL encode it with the Ctrl + U shortcut to make it safe to send.</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199931173-e8b9afbc-c9a9-42b0-b5e7-30e253ee3f45.png" height="50%" width="50%" alt="Burp"/>
 </p>
 
 <p align="center">
-<img src="" height="50%" width="50%" alt="Burp"/>
+<img src="https://user-images.githubusercontent.com/110497344/199930557-4a85af46-5cda-4d26-94df-fb6a930cd44a.png" height="50%" width="50%" alt="Burp"/>
 </p>
+
+    No answer needed
+    
+<b>Finally, press the "Forward" button to send the request.
+
+You should find that you get an alert box from the site indicating a successful XSS attack!</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199931565-95ce46f7-cd65-458c-a306-df7b3544eeef.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+    No answer needed
+    
+<b>Congratulations, you bypassed the filter!
+
+Don't expect it to be quite so easy in real life, but this should hopefully give you an idea of the kind of situation in which Burp Proxy can be useful.</b>
+
+    No answer needed
+    
+<h2>Task 15: Conclusion: Room Conclusion</h2>
+
+</p>
+
+We have now reached the end of the Burp Basics room.
+
+This room has hopefully given you a good grasp of the Burp Suite interface and configuration options, as well as giving you a working knowledge of the Burp Proxy.
+
+You are advised to experiment with these foundations until you are completely comfortable with them. Burp Suite is an invaluable tool in a web or mobile application pentester's arsenal. 
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>I understand the fundamentals of using Burp Suite!</b>
+
+    No answer needed
+    
