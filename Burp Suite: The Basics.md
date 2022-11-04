@@ -65,3 +65,35 @@ Due to the prohibitive costs involved with either of these editions of Burp Suit
 <b>Burp Suite is frequently used when attacking web applications and ______ applications.<b>
     
     Mobile
+    
+<h2>Task 3: Getting Started: Features of Burp Community</h2>
+
+</p>
+    
+Whilst Burp Community has a relatively limited feature-set compared to the Professional edition, it still has many superb tools available. These include:   
+
+- <b>Proxy:</b> The most well-known aspect of Burp Suite, the Burp Proxy allows us to intercept and modify requests/responses when interacting with web applications.
+- <b>Repeater:</b> The second most well-known Burp feature -- Repeater -- allows us to capture, modify, then resend the same request numerous times. This feature can be absolutely invaluable, especially when we need to craft a payload through trial and error (e.g. in an SQLi -- Structured Query Language Injection) or when testing the functionality of an endpoint for flaws.
+- <b>Intruder:</b> Although harshly rate-limited in Burp Community, Intruder allows us to spray an endpoint with requests. This is often used for bruteforce attacks or to fuzz endpoints.
+- <b>Decoder:</b> Though less-used than the previously mentioned features, Decoder still provides a valuable service when transforming data -- either in terms of decoding captured information, or encoding a payload prior to sending it to the target. Whilst there are other services available to do the same job, doing this directly within Burp Suite can be very efficient.
+- <b>Comparer:</b> As the name suggests, Comparer allows us to compare two pieces of data at either word or byte level. Again, this is not something that is unique to Burp Suite, but being able to send (potentially very large) pieces of data directly into a comparison tool with a single keyboard shortcut can speed things up considerably.
+- <b>Sequencer:</b> We usually use Sequencer when assessing the randomness of tokens such as session cookie values or other supposedly random generated data. If the algorithm is not generating secure random values, then this could open up some devastating avenues for attack.
+
+In addition to the myriad of in-built features, the Java codebase also makes it very easy to write extensions to add to the functionality of the Burp framework. These can be written in Java, Python (using the Java Jython interpreter), or Ruby (using the Java JRuby interpreter). The Burp Suite Extender module can quickly and easily load extensions into the framework, as well as providing a marketplace to download third-party modules (referred to as the "BApp Store"). Whilst many of these extensions require a professional license to download and add in, there are still a fair number that can be integrated with Burp Community. For example, we may wish to extend the inbuilt logging functionality of Burp Suite with the Logger++ module.
+<br />
+<br />
+
+<b>Answer the question below:</b>
+    
+<b>Which Burp Suite feature allows us to intercept requests between ourselves and the target?</b>
+    
+    Proxy
+    
+<b>Which Burp tool would we use if we wanted to bruteforce a login form?</b>
+    
+    Intruder
+    
+<h2>Task 4: Getting Started: Installation</h2>
+
+</p>
+    
