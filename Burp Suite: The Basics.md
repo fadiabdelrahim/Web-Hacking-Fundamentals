@@ -319,4 +319,252 @@ In the next section, we will cover the Burp Proxy -- a much more hands-on aspect
 
 </p>
 
+The Burp Proxy is the most fundamental (and most important!) of the tools available in Burp Suite. It allows us to capture requests and responses between ourselves and our target. These can then be manipulated or sent to other tools for further processing before being allowed to continue to their destination.
+
+For example, if we make a request to https://tryhackme.com through the Burp Proxy, our request will be captured and won't be allowed to continue to the TryHackMe servers until we explicitly allow it through. We can choose to do the same with the response from the server, although this isn't active by default. This ability to intercept requests ultimately means that we can take complete control over our web traffic -- an invaluable ability when it comes to testing web applications.
+
+There are a few configurations we need to make before we can use the proxy, but let's start by looking at the interface.
+
+<b>Note:</b> You do not need to follow along with this task -- just read the information and understand what the Proxy is used for.
+
+When we first open the Proxy tab, Burp gives us a bunch of useful information and background reading. This information is well worth reading through; however, the real magic happens after we capture a request:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199912608-c1fc1cbc-a43c-4e54-865d-5d9c4e4f16e9.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+With the proxy active, a request was made to the TryHackMe website. At this point, the browser making the request will hang, and the request will appear in the Proxy tab giving us the view shown in the screenshot above. We can then choose to forward or drop the request (potentially after editing it). We can also do various other things here, such as sending the request to one of the other Burp modules, copying it as a cURL command, saving it to a file, and many others.
+
+When we have finished working with the Proxy, we can click the "Intercept is on" button to disable the Intercept, which will allow requests to pass through the proxy without being stopped.
+
+Burp Suite will still (by default) be logging requests made through the proxy when the intercept is off. This can be very useful for going back and analysing prior requests, even if we didn't specifically capture them when they were made.
+
+Burp will also capture and log WebSocket communication, which, again, can be exceedingly helpful when analysing a web app.
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199912938-73057280-b8d6-4b60-933b-67481b2b9275.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+It is worth noting that any requests captured here can be sent to other tools in the framework by right-clicking them and choosing "Send to...". For example, we could take a previous HTTP request that has already been proxied to the target and send it to <b>Repeater</b>.
+
+Finally, there are also Proxy specific options, which we can view in the "Options" sub-tab.
+
+These options give us a lot of control over how the proxy operates, so it is an excellent idea to familiarise yourself with these.
+
+For example, the proxy will not intercept server responses by default unless we explicitly ask it to on a per-request basis. We can override the default setting by selecting the "Intercept responses based on the following rules" checkbox and picking one or more rules. The "<b>Or Request Was Intercepted</b>" rule is good for catching responses to all requests that were intercepted by the proxy:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199913805-643ba470-96a7-4a56-a5e5-f6b94f6ead1b.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+The "<b>And URL Is in target scope</b>" is another very good default rule; we will look at scoping later in this room.
+
+You can make your own rules for most of the Proxy options, so this is one section where looking around and experimenting will serve you very well indeed!
+
+Another particularly useful section of this sub-tab is the "Match and Replace" section; this allows you to perform regexes on incoming and outgoing requests. For example, you can automatically change your user agent to emulate a different web browser in outgoing requests or remove all cookies being set in incoming requests. Again, you are free to make your own rules here.
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>Which button would we choose to send an intercepted request to the target in Burp Proxy?</b>
+
+    Forward
+    
+<b>[Research] What is the default keybind for this?
+
+Note: Assume you are using Windows or Linux (i.e. swap Cmd for Ctrl).
+
+Hint: Use what you learnt in a previous task to look up the keybindings used in Burp Suite, then find a keybinding related to forwarding intercepted proxy messages.</b>
+
+    Ctrl+F
+    
+<h2>Task 9: Proxy: Connecting through the Proxy (FoxyProxy)</h2>
+
+</p>
+
+You've seen the theory; now it's time to start using the proxy for yourself.
+
+There are two ways to proxy our traffic through Burp Suite.
+
+1. We could use the embedded browser (we will cover this in a later task).
+2. We can configure our local web browser to proxy our traffic through Burp; this is more common and so will be the focus of this task.
+
+The Burp Proxy works by opening a web interface on 127.0.0.1:8080 (by default). As implied by the fact that this is a "proxy", we need to redirect all of our browser traffic through this port before we can start intercepting it with Burp. We can do this by altering our browser settings or, more commonly, by using a Firefox browser extension called FoxyProxy. FoxyProxy allows us to save proxy profiles, meaning we can quickly and easily switch to our "Burp Suite" profile in a matter of clicks, then disable the proxy just as easily.
+
+<b>Note:</b> All instructions will be given with Firefox in mind, as this is the default browser for both Kali Linux and the TryHackMe AttackBox. If you are using another browser locally then you are advised to use the AttackBox, or you may otherwise need to find alternative methods to those presented in this task. If you can't get the proxy working in your local browser and do not want to use the AttackBox, then you may wish to skip ahead to the Burp Suite Browser task.
+
+There are two versions of FoxyProxy: Basic and Standard. Both versions allow you to change your proxy settings on the fly; however, FoxyProxy Standard gives you a lot more control over what traffic gets sent through the proxy. For example, it will allow you to set pattern matching rules to determine whether a request should be proxied or not: this is more complicated than the simple proxy offered by FoxyProxy basic.
+
+The basic edition is more than adequate for our usage. It is pre-installed and configured in the Firefox browser of the AttackBox, so if you are using the AttackBox, please feel free to skip ahead to the last section of this task.
+
+If you are using your own machine, you can download FoxyProxy Basic here https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-basic/ 
+
+Once installed, a button should appear at the top right of the screen which allows you to access your proxy configurations:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199915027-ef00f4f2-4936-4844-b566-cf3c0830f1b6.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+There are no default configurations, so let's click on the "Options" button to create our Burp Proxy config.
+
+This will open a new browser tab with the FoxyProxy options page:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199915149-981028bf-990a-4062-acf0-ea829edac2a5.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+Click on the "Add" button and fill in the following values:
+
+Title: Burp (or anything else you prefer)
+Proxy IP: 127.0.0.1
+Port: 8080
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199915875-41d4f528-6ac0-47df-b257-2c77df1aa326.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+Now click "Save".
+
+When you click on the FoxyProxy icon at the top of the screen, you will see that that there is a configuration available for Burp:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199915974-558bbe69-440e-4ffb-9c93-4a8f79f30422.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+If we click on the "Burp" config, our browser will start directing all of our traffic through 127.0.0.1:8080. Be warned: if Burp Suite is not running, your browser will not be able to make any requests when this config is activated!
+
+Activate this config now -- the icon in the menu should change to indicate that we have a proxy running:
+
+Next, switch over to Burp Suite and make sure the Intercept is On:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199916166-75d6fd26-0de1-425a-950d-fdaa6ee835df.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+Now, try accessing the homepage for http://10.10.75.35/ in Firefox. Your browser should hang, and your proxy will populate with the request headers.
+
+Congratulations, you just intercepted your first request!
+
+From here, you can choose to forward or drop the request. Alternatively, you could send it to another tool or perform any number of other actions by right-clicking on the request and selecting an option from the right-click menu.
+
+Remember: Whilst you are connected to the proxy and have the Proxy Intercept switched on, your browser will hang whenever you make a request. A very common mistake when you are learning to use Burp Suite (and indeed, later on!) is to accidentally leave the intercept switched on and ergo be unable to make any web requests through your browser. If your browser is hanging and you don't know why: check your proxy!
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>Read through the options in the right-click menu.
+
+There is one particularly useful option that allows you to intercept and modify the response to your request.
+
+What is this option?
+
+Note: The option is in a dropdown sub-menu.</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199917207-5ec82865-dca2-4e75-8289-1925003bd571.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+    Response to this request
+    
+<b>[Bonus Question -- Optional] Try installing FoxyProxy standard and have a look at the pattern matching features.</b>
+
+    No answer needed
+    
+<h2>Task 10: Proxy: Proxying HTTPS</h2>
+
+</p>
+
+Note: The AttackBox is already configured to solve the problem posed in this task. If you are using the AttackBox and don't wish to read through the information here, you can skip to the next task.
+
+Great, so we can intercept HTTP traffic -- what's next?
+
+Unfortunately, there's a problem. What happens if we navigate to a site with TLS enabled? For example,
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199917626-91481398-104b-4cb8-91bb-0b24030a057a.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+We get an error.
+
+Specifically, Firefox is telling us that the Portswigger Certificate Authority (CA) isn't authorised to secure the connection.
+
+Fortunately, Burp offers us an easy way around this. We need to get Firefox to trust connections secured by Portswigger certs, so we will manually add the CA certificate to our list of trusted certificate authorities.
+
+First, with the proxy activated head to http://burp/cert; this will download a file called <b>cacert.der</b> -- save it somewhere on your machine.
+
+Next, type about:preferences into your Firefox search bar and press enter; this takes us to the FireFox settings page. Search the page for "certificates" and we find the option to "View Certificates":
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199917847-a5751021-6f14-4f65-ad5e-427c4778ae9f.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+Clicking the "View Certificates" button allows us to see all of our trusted CA certificates. We can register a new certificate for Portswigger by pressing "Import" and selecting the file that we just downloaded.
+
+In the menu that pops up, select "Trust this CA to identify websites", then click Ok:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199917969-c33f495a-4321-4c7d-a2ae-5e78c916baab.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+We should now be free to visit any TLS enabled sites that we wish!
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>If you are not using the AttackBox, configure Firefox (or your browser of choice) to accept the Portswigger CA certificate for TLS communication through the Burp Proxy.</b>
+
+    No answer needed
+    
+<h2>Task 11: Proxy: Proxying HTTPS</h2>
+
+</p>
+
+If the last few tasks seemed overly complex, rest assured, this topic will be a lot simpler.
+
+In addition to giving us the option to modify our regular web browser to work with the proxy, Burp Suite also includes a built-in Chromium browser that is pre-configured to use the proxy without any of the modifications we just had to do.
+
+Whilst this may seem ideal, it is not as commonly used as the process detailed in the previous few tasks. People tend to stick with their own browser as it gives them a lot more customisability; however, both are perfectly valid choices.
+
+We can start the Burp Browser with the "Open Browser" button in the proxy tab:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199918771-6e756cc3-a025-4512-b0bb-1a3ca075ff64.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+A Chromium window will now pop up. Any requests we make in this will go through the proxy.
+
+<b>Note:</b> There are many settings to do with the Burp Browser in the Project options and User options tabs -- make sure to go look at them!
+
+If we are running on Linux as the root user (as we are with the AttackBox), Burp Suite is unable to create a sandbox environment to start the Burp Browser in, causing it to throw an error and die:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199918908-7c429f35-dbdb-4572-adb1-ecaf27e29279.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+There are two simple solutions to this:
+
+- <b>The smart option:</b> We could create a new user and run Burp Suite under a low privilege account.
+- <b>The easy option:</b> We could go to <b>Project options -> Misc -> Embedded Browser</b> and check the <b?Allow the embedded browser to run without a sandbox option</b>. Checking this option will allow the browser to start, but be aware that it is disabled by default for security reasons: if we get compromised using the browser, then an attacker will have access to our entire machine. On the training environment of the AttackBox this is unlikely (and isn't a huge issue even if it does happen), but keep it in mind if you try this on a local installation of Burp Suite.
+
+Be aware that you will need to do this if using the embedded browser on the AttackBox.
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>Using the in-built browser, make a request to http://10.10.75.35/ and capture it in the proxy.</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199919854-e3938600-69dd-4521-8151-faa60183781d.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+    No answer needed
+    
+<h2>Task 12: Proxy: Scoping and Targeting</h2>
+
+</p>
+
 
