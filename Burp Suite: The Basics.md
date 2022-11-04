@@ -567,4 +567,58 @@ Be aware that you will need to do this if using the embedded browser on the Atta
 
 </p>
 
+Finally, we come to one of the most important parts of using the Burp Proxy: Scoping.
 
+It can get extremely tedious having Burp capturing all of our traffic. When it logs everything (including traffic to sites we aren't targeting), it muddies up logs we may later wish to send to clients. In short, allowing Burp to capture everything can quickly become a massive pain.
+
+What's the solution? Scoping.
+
+Setting a scope for the project allows us to define what gets proxied and logged. We can restrict Burp Suite to only target the web application(s) that we want to test. The easiest way to do this is by switching over to the "Target" tab, right-clicking our target from our list on the left, then choosing "Add To Scope". Burp will then ask us whether we want to stop logging anything which isn't in scope -- most of the time we want to choose "yes" here.
+
+We can now check our scope by switching to the "Scope" sub-tab.
+
+The Scope sub-tab allows us to control what we are targeting by either Including or Excluding domains / IPs. This is a very powerful section, so it's well worth taking the time to get accustomed to using it.
+
+We just chose to disable logging for out of scope traffic, but the proxy will still be intercepting everything. To turn this off, we need to go into the Proxy Options sub-tab and select "<b>And URL Is in target scope</b>" from the Intercept Client Requests section:
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199921856-ca8be8bf-89b3-4cd0-9da6-4776844cebd9.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+With this option selected, the proxy will completely ignore anything that isn't in the scope, vastly cleaning up the traffic coming through Burp.
+<br />
+<br />
+
+<b>Answer the question below:</b>
+
+<b>Add http://10.10.75.35/ to your scope and change the Proxy settings to only intercept traffic to in-scope targets.
+
+See the difference between the amount of traffic getting caught by the proxy before and after limiting the scope.</b>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199922602-485a51d8-ecf6-42c9-81b4-bcf5496342a7.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/110497344/199922958-111abeaf-5436-42c1-afd2-14bdb1558e66.png" height="50%" width="50%" alt="Burp"/>
+</p>
+
+    No answer needed
+    
+<h2>Task 13: Proxy: Site Map and Issue Definitions</h2>
+
+</p>
+
+
+
+<p align="center">
+<img src="" height="50%" width="50%" alt="Burp"/>
+</p>
+
+<p align="center">
+<img src="" height="50%" width="50%" alt="Burp"/>
+</p>
+
+<p align="center">
+<img src="" height="50%" width="50%" alt="Burp"/>
+</p>
